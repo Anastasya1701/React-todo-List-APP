@@ -12,7 +12,7 @@ export default class TodoListItem extends React.Component {
         this.setState(({ done }) => {
             // put inside setState function because setState is async, and we are waiting for final state to toggle it
             return {
-                done: !state.done,
+                done: !done,
             }
         })
     }
@@ -22,14 +22,14 @@ export default class TodoListItem extends React.Component {
             // put inside setState function because setState is async, and we are waiting for final state to toggle it
             this.setState(({ important }) => {
                 return {
-                    important: !state.important,
+                    important: !important,
                 }
             })
         }
     }
 
     render() {
-        const { label } = this.props;
+        const { label, onDeleted } = this.props;
         const { done, important } = this.state;
 
         return (
@@ -46,7 +46,9 @@ export default class TodoListItem extends React.Component {
                 </button>
                 <button type="button"
                     className="btn btn-outline-danger btn-sm float-right">
-                    <i className="fa fa-trash-o" />
+                    <i
+                        className="fa fa-trash-o"
+                        onClick={onDeleted} />
                 </button>
             </span>
         )
