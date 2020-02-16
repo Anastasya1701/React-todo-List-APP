@@ -17,6 +17,7 @@ export default class App extends React.Component {
       this.createTodoItem('Have a lunch'),
     ],
     term: '',
+    filter: 'all' // done, active
   }
 
   createTodoItem(label) {
@@ -93,38 +94,26 @@ export default class App extends React.Component {
 
   }
 
-  oldTodoDate = this.state.todoData
-
-
-  filterButton(e) {
-    if (e.target.classList.contains("act")) {
-      this.setState(({ todoData }) => {
-        return {
-          todoData: todoData.filter(el => !el.done)
-        }
-      })
+  filter(arr, filter) {
+    switch (filter) {
+      case 'all':
+        return arr;
+      case 'done':
+        return arr.filter(el => el.done);
+      case 'active':
+        return arr.filter(el => !el.done);
+      default:
+        return arr;
     }
-    if (e.target.classList.contains("all")) {
-      this.setState(() => {
-        return {
-          todoData: this.oldTodoDate
-        }
-      })
-    }
-    if (e.target.classList.contains("don")) {
-      this.setState(({ todoData }) => {
-        return {
-          todoData: todoData.filter(el => el.done)
-        }
-      })
-    }
-
   }
 
   onSearchCange = (term) => {
     this.setState({ term })
   }
 
+  filterButton = (filter) => {
+    this.setState({ filter })
+  }
 
   search(arr, term) {
     if (term.length === 0) {
@@ -136,19 +125,21 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { todoData, term } = this.state
+    const { todoData, term, filter } = this.state
 
     const doneCount = todoData.filter(el => el.done).length;
     const todoCount = todoData.length - doneCount
 
-    const visibleItems = this.search(todoData, term)
+    const visibleItems = this.filter(this.search(todoData, term), filter)
 
     return (
       <div className="todo-app">
         <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel onSearchCange={this.onSearchCange} />
-          <ItemStatusFilter filterButton={(e) => this.filterButton(e)} />
+          <ItemStatusFilter
+            filterButton={this.filterButton}
+            filter={filter} />
         </div>
 
         <TodoList

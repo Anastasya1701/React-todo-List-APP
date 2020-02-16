@@ -1,19 +1,30 @@
 import React from 'react'
 
 export default class ItemStatusFilter extends React.Component {
-    // buttons = []
+    buttonsArr = [
+        { name: 'all', label: 'All' },
+        { name: 'done', label: 'Done' },
+        { name: 'active', label: 'Active' }
+    ]
 
     render() {
-        const { filterButton } = this.props
+        const { filterButton, filter } = this.props
+
+        const buttons = this.buttonsArr.map(({ name, label }) => {
+            return <button
+                type="button"
+                className={name === filter ? "btn btn-info" : "btn btn-outline-secondary"}
+                key={name}
+                onClick={() => filterButton(name)
+                }
+            >
+                {label}
+            </button >
+        })
 
         return (
-            <div className="btn-group" onClick={(e) => filterButton(e)}>
-                <button type="button"
-                    className="all btn btn-info">All</button>
-                <button type="button"
-                    className="act btn btn-outline-secondary">Active</button>
-                <button type="button"
-                    className="don btn btn-outline-secondary">Done</button>
+            <div className="btn-group">
+                {buttons}
             </div>
         );
     }
