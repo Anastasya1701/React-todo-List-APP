@@ -1,11 +1,25 @@
 import React from 'react'
 
-const SerachPanel = () => {
-    return (
-        <input type="text"
-            className="form-control search-input"
-            placeholder="type to search" />
-    )
-}
+export default class SerachPanel extends React.Component {
 
-export default SerachPanel
+    state = {
+        term: ''
+    }
+
+    onChange = (e) => {
+        const term = e.target.value
+        this.setState({ term })
+        this.props.onSearchCange(term)
+    }
+
+    render() {
+        return (
+            <input type="text"
+                className="form-control search-input"
+                placeholder="type to search"
+                onChange={this.onChange}
+                value={this.state.term}
+            />
+        )
+    }
+}
